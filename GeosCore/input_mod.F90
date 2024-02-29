@@ -4889,73 +4889,6 @@ CONTAINS
     Input_Opt%TCCON_CH4_OBS = v_bool
 
     !------------------------------------------------------------------------
-    ! Do an analytical inversion?
-    !------------------------------------------------------------------------
-    key    = "CH4_simulation_options%analytical_inversion%activate"
-    v_bool = MISSING_BOOL
-    CALL QFYAML_Add_Get( Config, TRIM( key ), v_bool, "", RC )
-    IF ( RC /= GC_SUCCESS ) THEN
-       errMsg = 'Error parsing ' // TRIM( key ) // '!'
-       CALL GC_Error( errMsg, RC, thisLoc )
-       RETURN
-    ENDIF
-    Input_Opt%AnalyticalInv = v_bool
-
-    !------------------------------------------------------------------------
-    ! Emission perturbation
-    !------------------------------------------------------------------------
-    key   = "CH4_simulation_options%analytical_inversion%emission_perturbation"
-    v_str = MISSING_STR
-    CALL QFYAML_Add_Get( Config, TRIM( key ), v_str, "", RC )
-    IF ( RC /= GC_SUCCESS ) THEN
-       errMsg = 'Error parsing ' // TRIM( key ) // '!'
-       CALL GC_Error( errMsg, RC, thisLoc )
-       RETURN
-    ENDIF
-    Input_Opt%PerturbEmis = Cast_and_RoundOff( v_str, places=4 )
-
-    !------------------------------------------------------------------------
-    ! Current state vector element number
-    !------------------------------------------------------------------------
-    key   = &
-     "CH4_simulation_options%analytical_inversion%state_vector_element_number"
-    v_int = MISSING_INT
-    CALL QFYAML_Add_Get( Config, TRIM( key ), v_int, "", RC )
-    IF ( RC /= GC_SUCCESS ) THEN
-       errMsg = 'Error parsing ' // TRIM( key ) // '!'
-       CALL GC_Error( errMsg, RC, thisLoc )
-       RETURN
-    ENDIF
-    Input_Opt%StateVectorElement = v_int
-
-    !------------------------------------------------------------------------
-    ! Use emission scale factor?
-    !------------------------------------------------------------------------
-    key = &
-     "CH4_simulation_options%analytical_inversion%use_emission_scale_factor"
-    v_bool = MISSING_BOOL
-    CALL QFYAML_Add_Get( Config, TRIM( key ), v_bool, "", RC )
-    IF ( RC /= GC_SUCCESS ) THEN
-       errMsg = 'Error parsing ' // TRIM( key ) // '!'
-       CALL GC_Error( errMsg, RC, thisLoc )
-       RETURN
-    ENDIF
-    Input_Opt%UseEmisSF = v_bool
-
-    !------------------------------------------------------------------------
-    ! Use OH scale factors?
-    !------------------------------------------------------------------------
-    key    = "CH4_simulation_options%analytical_inversion%use_OH_scale_factors"
-    v_bool = MISSING_BOOL
-    CALL QFYAML_Add_Get( Config, TRIM( key ), v_bool, "", RC )
-    IF ( RC /= GC_SUCCESS ) THEN
-       errMsg = 'Error parsing ' // TRIM( key ) // '!'
-       CALL GC_Error( errMsg, RC, thisLoc )
-       RETURN
-    ENDIF
-    Input_Opt%UseOHSF = v_bool
-
-    !------------------------------------------------------------------------
     ! Perturb CH4 boundary conditions?
     !------------------------------------------------------------------------
     key    = "CH4_simulation_options%analytical_inversion%perturb_CH4_boundary_conditions"
@@ -4993,11 +4926,6 @@ CONTAINS
        WRITE(6,100) 'Use AIRS obs operator    : ', Input_Opt%AIRS_CH4_OBS
        WRITE(6,100) 'Use GOSAT obs operator   : ', Input_Opt%GOSAT_CH4_OBS
        WRITE(6,100) 'Use TCCON obs operator   : ', Input_Opt%TCCON_CH4_OBS
-       WRITE(6,100) 'Do analytical inversion  : ', Input_Opt%AnalyticalInv
-       WRITE(6,110) 'Emission perturbation    : ', Input_Opt%PerturbEmis
-       WRITE(6,120) 'Current state vector elem: ', Input_Opt%StateVectorElement
-       WRITE(6,100) 'Use emis scale factors   : ', Input_Opt%UseEmisSF
-       WRITE(6,100) 'Use OH scale factors     : ', Input_Opt%UseOHSF
        WRITE(6,100) 'Perturb CH4 BCs          : ', Input_Opt%PerturbCH4BoundaryConditions
        WRITE(6,130) 'CH4 BC ppb increase NSEW : ', Input_Opt%CH4BoundaryConditionIncreaseNorth,&
                                                    Input_Opt%CH4BoundaryConditionIncreaseSouth,&
@@ -5009,8 +4937,6 @@ CONTAINS
 90  FORMAT( /, A    )
 95  FORMAT( A       )
 100 FORMAT( A, L5   )
-110 FORMAT( A, f6.2 )
-120 FORMAT( A, I5   )
 130 FORMAT( A, F10.4, 1X, F10.4, 1X, F10.4, 1X, F10.4)
 
   END SUBROUTINE Config_CH4
